@@ -1,12 +1,12 @@
-package dev.attendancemanagerback;
+package dev.attendancemanager;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AttendanceManagerBackApplication {
+public class AttendanceManagerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AttendanceManagerBackApplication.class, args);
+		SpringApplication.run(AttendanceManagerApplication.class, args);
 	}
 }
