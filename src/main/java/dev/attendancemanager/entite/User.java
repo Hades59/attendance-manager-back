@@ -1,6 +1,8 @@
 package dev.attendancemanager.entite;
 
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -8,6 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * @author Florent Callaou
@@ -37,6 +42,8 @@ public class User {
 	private String password;
 	
 	/** subalternes : List<User> */
+	@JsonIgnore
+	@Transient
 	@OneToMany
 	private List<User> subalternes;
 	
@@ -63,15 +70,13 @@ public class User {
 	 * @param subalternes
 	 * @param departement
 	 */
-	public User(String matricule, String firstname, String lastname, String email, String password,
-			List<User> subalternes, Departement departement) {
+	public User(String matricule, String firstname, String lastname, String email, String password, Departement departement) {
 		super();
 		this.matricule = matricule;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.email = email;
 		this.password = password;
-		this.subalternes = subalternes;
 		this.departement = departement;
 	}
 
@@ -177,6 +182,10 @@ public class User {
 	 */
 	public void setDepartement(Departement departement) {
 		this.departement = departement;
+	}
+	
+	public List<String> getMatriculeSubalternes(){
+		return subalternes.stream().map(User::getMatricule).collect(Collectors.toList());
 	}
 	
 }
