@@ -16,7 +16,7 @@ import dev.attendancemanager.repository.AbsenceRepository;
 public class UserController {
 	//private AbsenceRepository 
 	@PostMapping(path="/{matricule}/absences")
-	public void createAbsence(@PathVariable String matricule, @RequestBody Absence data){
-		System.out.println(data);
+	public Absence createAbsence(@PathVariable String matricule, @RequestBody Absence data){
+		return data;
 	}
 }
