@@ -12,20 +12,26 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.attendancemanager.entite.Absence;
 import dev.attendancemanager.entite.AbsenceStatus;
+import dev.attendancemanager.entite.User;
 import dev.attendancemanager.repository.AbsenceRepository;
+import dev.attendancemanager.repository.UserRepository;
 
 @RestController
 @RequestMapping("/users")
 @CrossOrigin(origins = "*")
 public class UserController {
 	
-	@Autowired private AbsenceRepository repoAbsence;
+	@Autowired private AbsenceRepository absenceRepository;
+	@Autowired private UserRepository userRepository;
 	
 	@PostMapping(path="/{matricule}/absences")
-	public Absence createAbsence(@PathVariable String matricule, @RequestBody Absence data){
-		data.setStatus(AbsenceStatus.INITIALE);
-		repoAbsence.save(data);
+	public Absence createAbsence(@PathVariable String matricule, @RequestBody Absence absence){
+		absence.setStatus(AbsenceStatus.INITIALE);
+		User user = userRepository.findByMatricule(matricule);
+		absence.setUser(user);
 		
-		return data;
+		absenceRepository.save(absence);
+		
+		return absence;
 	}
 }

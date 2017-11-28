@@ -6,4 +6,6 @@ import dev.attendancemanager.entite.User;
 
 public interface UserRepository extends JpaRepository<User, Integer>{
 
+	User findByMatricule(String matricule);
+
 }

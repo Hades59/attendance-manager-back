@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  * @author Florent Callaou
@@ -45,6 +46,14 @@ public class Absence {
 	 */
 	@Column
 	private AbsenceStatus status;
+
+	/**
+	 * user : User
+	 * @See User
+	 */
+	@ManyToOne
+	private User user;
+
 
 	/**
 	 * Empty constructor
@@ -148,6 +157,20 @@ public class Absence {
 	public void setStatus(AbsenceStatus status) {
 		this.status = status;
 	}
+	/**
+	 * Getter for user 
+	 * @return user
+	 */
+	public User getUser() {
+		return user;
+	}
 
+	/**
+	 * Setter for user
+	 * @param user
+	 */
+	public void setUser(User user) {
+		this.user = user;
+	}
 	
 }
