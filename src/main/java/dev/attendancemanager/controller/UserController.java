@@ -21,8 +21,8 @@ public class UserController {
 	@Autowired private AbsenceRepository repoAbsence;
 	
 	@PostMapping(path="/{matricule}/absences")
-	public List<Absence> createAbsence(@PathVariable String matricule, @RequestBody Absence data){
+	public Absence createAbsence(@PathVariable String matricule, @RequestBody Absence data){
 		repoAbsence.save(data);
-		return repoAbsence.findAll();
+		return data;
 	}
 }
