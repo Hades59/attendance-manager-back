@@ -1,5 +1,8 @@
 package dev.attendancemanager.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,9 +17,12 @@ import dev.attendancemanager.repository.AbsenceRepository;
 @RequestMapping("/users")
 @CrossOrigin(origins = "*")
 public class UserController {
-	//private AbsenceRepository 
+	
+	@Autowired private AbsenceRepository repoAbsence;
+	
 	@PostMapping(path="/{matricule}/absences")
-	public Absence createAbsence(@PathVariable String matricule, @RequestBody Absence data){
-		return data;
+	public List<Absence> createAbsence(@PathVariable String matricule, @RequestBody Absence data){
+		repoAbsence.save(data);
+		return repoAbsence.findAll();
 	}
 }
