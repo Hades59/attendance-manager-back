@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.attendancemanager.entite.Absence;
+import dev.attendancemanager.entite.AbsenceStatus;
 import dev.attendancemanager.repository.AbsenceRepository;
 
 @RestController
@@ -21,8 +22,10 @@ public class UserController {
 	@Autowired private AbsenceRepository repoAbsence;
 	
 	@PostMapping(path="/{matricule}/absences")
-	public List<Absence> createAbsence(@PathVariable String matricule, @RequestBody Absence data){
+	public Absence createAbsence(@PathVariable String matricule, @RequestBody Absence data){
+		data.setStatus(AbsenceStatus.INITIALE);
 		repoAbsence.save(data);
-		return repoAbsence.findAll();
+		
+		return data;
 	}
 }
