@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-
 /**
  * @author Florent Callaou
  * Manage absence of an user 
@@ -32,22 +31,16 @@ public class Absence {
 	private LocalDate endDate;
 	
 	/** motif : String */
-	@Column
 	private String motif;
-	
 
 	/** type : AbscenceType 
-	 * @see AbscenceType
-
-	*/
-	@Column
+	 * @see AbscenceType **/
 	private AbscenceType type;
 	
 	/**
 	 * status : AbsenceStatus
 	 * @see AbsenceStatus
 	 */
-	@Column
 	private AbsenceStatus status;
 
 	/**
@@ -73,15 +66,13 @@ public class Absence {
 	 * @param status
 	 * @param type
 	 */
-
-	public Absence(LocalDate beginDate, LocalDate endDate, String motif, AbsenceStatus status, AbscenceType type) {
-
+	public Absence(LocalDate beginDate, LocalDate endDate, String motif, AbscenceType type, AbsenceStatus status) {
 		super();
 		this.beginDate = beginDate;
 		this.endDate = endDate;
 		this.motif = motif;
+		this.type = type;
 		this.status = status;
-		this.setType(type);
 	}
 
 	/** Getter for id
@@ -139,7 +130,13 @@ public class Absence {
 	/** Setter for status
 	 * @param status the status to set
 	 */
+	public AbsenceStatus getStatus() {
+		return status;
+	}
 
+	public void setStatus(AbsenceStatus status) {
+		this.status = status;
+	}
 
 	/** Getter for type
 	 * @return the type
@@ -153,23 +150,7 @@ public class Absence {
 	public void setType(AbscenceType type) {
 		this.type = type;
 	}
-	
-	/**
-	 *  Getter for status
-	 * @return
-	 */
-	public AbsenceStatus getStatus() {
-		return status;
-	}
 
-
-	/**
-	 * Setter for status
-	 * @param status
-	 */
-	public void setStatus(AbsenceStatus status) {
-		this.status = status;
-	}
 	/**
 	 * Getter for user 
 	 * @return user
@@ -177,7 +158,6 @@ public class Absence {
 	public User getUser() {
 		return user;
 	}
-
 
 	/**
 	 * Setter for user

@@ -1,5 +1,3 @@
-
-
 package dev.attendancemanager.controller;
 
 import java.util.List;
@@ -20,22 +18,17 @@ import dev.attendancemanager.repository.AbsenceRepository;
  * @author ETY23
  *
  */
-
-
 @RestController
 @RequestMapping("/absences")
 @CrossOrigin(origins = "*")
 public class AbsenceController {
 	@Autowired
 	AbsenceRepository absenceRepository;
-	
-	@GetMapping
 
+	@GetMapping
 	public List<Absence> absenceList(){
 		return absenceRepository.findAll();
 	}
-
-
 
 	public List<Absence> getAbsences(@RequestParam Optional<AbsenceStatus> status) {
 		if (status.isPresent()) {
@@ -43,7 +36,6 @@ public class AbsenceController {
 		}
 		return absenceRepository.findAll();
 	}
+
+
 }
-
-
-

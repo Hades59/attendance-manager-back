@@ -77,29 +77,29 @@ public class UsersListener {
 				LocalDate.of(2017, 12, 5),
 				LocalDate.of(2017, 12, 7),
 				"Mal au cul",
-				AbsenceStatus.INITIALE,
-				AbscenceType.CONGE_PAYE));
+				AbscenceType.CONGE_PAYE,
+				AbsenceStatus.EN_ATTENTE_VALIDATION));
 		
 		abscences.add(new Absence(
 				LocalDate.of(2017, 12, 17),
 				LocalDate.of(2017, 12, 27),
 				"Parce que",
-				AbsenceStatus.INITIALE,
-				AbscenceType.CONGE_PAYE));
+				AbscenceType.CONGE_PAYE,
+				AbsenceStatus.EN_ATTENTE_VALIDATION));
 		
 		abscences.add(new Absence(
 				LocalDate.of(2017, 12, 29),
 				LocalDate.of(2018, 2, 17),
 				"Voila",
-				AbsenceStatus.INITIALE,
-				AbscenceType.RTT));
+				AbscenceType.RTT,
+				AbsenceStatus.EN_ATTENTE_VALIDATION));
 		
 		abscences.add(new Absence(
 				LocalDate.of(2017, 11, 13),
 				LocalDate.of(2018, 3, 17),
 				"Voila",
-				AbsenceStatus.INITIALE,
-				AbscenceType.RTT));
+				AbscenceType.RTT,
+				AbsenceStatus.EN_ATTENTE_VALIDATION));
 				 
 		abscences.forEach(absenceRepository::save);
 	
@@ -107,9 +107,6 @@ public class UsersListener {
 
 	
 	private void rebase() throws IOException {
-
-//		entityManager.createNativeQuery("TRUNCATE TABLE Absence").executeUpdate();
-//	    entityManager.createNativeQuery("TRUNCATE TABLE User").executeUpdate();
 
 		JsonNode array = mapper.readValue(response.getBody(), JsonNode.class);
 
@@ -134,6 +131,10 @@ public class UsersListener {
 			users.add(new User(matricule, firstname, lastname, email, password, departement));
 		});
 
+		entityManager.createNativeQuery("TRUNCATE TABLE absence").executeUpdate();
+	    entityManager.createNativeQuery("DELETE FROM user").executeUpdate();
+	    entityManager.createNativeQuery("ALTER TABLE user AUTO_INCREMENT = 1").executeUpdate();
+	    
 
 		Stream.of(users).forEach(userRepository::save);
 		lastHash = response.getBody().hashCode();
