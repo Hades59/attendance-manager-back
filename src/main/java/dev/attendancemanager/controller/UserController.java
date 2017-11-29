@@ -3,12 +3,7 @@ package dev.attendancemanager.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import dev.attendancemanager.entite.Absence;
 import dev.attendancemanager.entite.AbsenceStatus;
@@ -25,7 +20,7 @@ public class UserController {
 	@Autowired private UserRepository userRepository;
 	
 	@PostMapping(path="/{matricule}/absences")
-	public Absence createAbsence(@PathVariable String matricule, @RequestBody Absence absence){
+	public Absence createAbsence(@PathVariable String matricule, @RequestBody Absence absence) {
 		absence.setStatus(AbsenceStatus.INITIALE);
 		User user = userRepository.findByMatricule(matricule);
 		absence.setUser(user);
@@ -33,5 +28,11 @@ public class UserController {
 		absenceRepository.save(absence);
 		
 		return absence;
+	}
+	
+	@DeleteMapping(path="/{matricule}/absences/{id}")
+	public Absence deleteAbsence(@PathVariable String matricule, @PathVariable Integer id) {
+		
+		return null;
 	}
 }
