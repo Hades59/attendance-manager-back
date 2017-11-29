@@ -1,11 +1,11 @@
 package dev.attendancemanager.listener;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +22,11 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import dev.attendancemanager.entite.Absence;
 import dev.attendancemanager.entite.Departement;
+import dev.attendancemanager.entite.TypeAbscence;
 import dev.attendancemanager.entite.User;
+import dev.attendancemanager.repository.AbsenceRepository;
 import dev.attendancemanager.repository.UserRepository;
 
 @RestController
@@ -34,6 +37,10 @@ public class UsersListener {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private AbsenceRepository absenceRepository;
+	
 	private RestTemplate restTemplate = new RestTemplate();
 	private ObjectMapper mapper = new ObjectMapper();
 	private ResponseEntity<String> response;
@@ -61,6 +68,40 @@ public class UsersListener {
 		response = restTemplate.getForEntity(url, String.class);
 
 		rebase();
+		
+		
+		List<Absence> abscences = new ArrayList<>();
+		
+		abscences.add(new Absence(
+				LocalDate.of(2017, 12, 5),
+				LocalDate.of(2017, 12, 7),
+				"Mal au cul",
+				"VALIDEE",
+				TypeAbscence.CONGE_PAYE));
+		
+		abscences.add(new Absence(
+				LocalDate.of(2017, 12, 17),
+				LocalDate.of(2017, 12, 27),
+				"Parce que",
+				"VALIDEE",
+				TypeAbscence.CONGE_PAYE));
+		
+		abscences.add(new Absence(
+				LocalDate.of(2017, 12, 29),
+				LocalDate.of(2018, 2, 17),
+				"Voila",
+				"EN ATTENTE",
+				TypeAbscence.RTT));
+		
+		abscences.add(new Absence(
+				LocalDate.of(2017, 11, 13),
+				LocalDate.of(2018, 3, 17),
+				"Voila",
+				"INITIALE",
+				TypeAbscence.RTT));
+				
+		abscences.forEach(absenceRepository::save);
+	
 	}
 
 	
