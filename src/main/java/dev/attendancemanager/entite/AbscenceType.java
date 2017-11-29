@@ -5,9 +5,10 @@ package dev.attendancemanager.entite;
  * Type of the absence
  * @see Absence
  */
-public enum TypeAbscence {
+public enum AbscenceType {
 	
 	RTT,
-	CONGE_PAYE;
+	CONGE_PAYE,
+	CONGE_SANS_SOLDE;
 	
 }
