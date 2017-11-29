@@ -1,4 +1,4 @@
-package dev.attendancemanager;
+package dev.attendancemanager.util;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -14,8 +14,8 @@ public class LocalDateSerializer extends JsonSerializer<LocalDate> {
     public static final DateTimeFormatter FORMATTER = ofPattern("dd::MM::yyyy");
 
     public LocalDateSerializer() {
-		// TODO Auto-generated constructor stub
 	}
+    
     @Override
     public void serialize(LocalDate value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         gen.writeString(value.format(FORMATTER));

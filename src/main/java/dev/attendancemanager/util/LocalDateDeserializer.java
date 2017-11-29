@@ -1,4 +1,4 @@
-package dev.attendancemanager;
+package dev.attendancemanager.util;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -11,13 +11,15 @@ import static java.time.format.DateTimeFormatter.ofPattern;
 
 
 public class LocalDateDeserializer extends JsonDeserializer<LocalDate> {
+	
     public static final DateTimeFormatter FORMATTER = ofPattern("dd::MM::yyyy");
 
+    public LocalDateDeserializer() {
+	}
+    
     @Override
     public LocalDate deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         return LocalDate.parse(p.getValueAsString(), FORMATTER);
     }
-    public LocalDateDeserializer() {
-		// TODO Auto-generated constructor stub
-	}
+   
 }

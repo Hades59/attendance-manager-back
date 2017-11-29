@@ -65,8 +65,6 @@ public class UsersListener {
 	
 	private void rebase() throws IOException {
 
-	    entityManager.createNativeQuery("TRUNCATE TABLE User").executeUpdate();
-
 		JsonNode array = mapper.readValue(response.getBody(), JsonNode.class);
 
 		List<User> users = new ArrayList<>();
@@ -90,6 +88,9 @@ public class UsersListener {
 			users.add(new User(matricule, firstname, lastname, email, password, departement));
 		});
 
+		entityManager.createNativeQuery("TRUNCATE TABLE absence").executeUpdate();
+	    entityManager.createNativeQuery("DELETE FROM user").executeUpdate();
+	    entityManager.createNativeQuery("ALTER TABLE user AUTO_INCREMENT = 1").executeUpdate();
 
 		Stream.of(users).forEach(userRepository::save);
 		lastHash = response.getBody().hashCode();
