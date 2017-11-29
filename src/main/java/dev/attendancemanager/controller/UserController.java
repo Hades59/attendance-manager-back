@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,18 +21,34 @@ import dev.attendancemanager.repository.UserRepository;
 @RequestMapping("/users")
 @CrossOrigin(origins = "*")
 public class UserController {
-	
-	@Autowired private AbsenceRepository absenceRepository;
-	@Autowired private UserRepository userRepository;
-	
-	@PostMapping(path="/{matricule}/absences")
-	public Absence createAbsence(@PathVariable String matricule, @RequestBody Absence absence){
+
+	@Autowired
+	private AbsenceRepository absenceRepository;
+	@Autowired
+	private UserRepository userRepository;
+
+	/**
+	 * Method for create an absence
+	 * 
+	 * @param matricule
+	 * @param absence
+	 * @return Absence
+	 */
+	@PostMapping(path = "/{matricule}/absences")
+	public Absence createAbsence(@PathVariable String matricule, @RequestBody Absence absence) {
+
+		// si l'id est valoriser => update
+
 		absence.setStatus(AbsenceStatus.INITIALE);
+		System.out.println("###############################################Mon id :"+absence.getId());
 		User user = userRepository.findByMatricule(matricule);
 		absence.setUser(user);
-		
 		absenceRepository.save(absence);
-		
+
 		return absence;
 	}
+	
+	
+	
+
 }

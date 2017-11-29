@@ -64,9 +64,10 @@ public class UsersListener {
 
 	
 	private void rebase() throws IOException {
-
-	    entityManager.createNativeQuery("TRUNCATE TABLE User").executeUpdate();
-
+/*
+		entityManager.createNativeQuery("TRUNCATE TABLE absence").executeUpdate();
+        entityManager.createNativeQuery("DELETE FROM user").executeUpdate();
+        entityManager.createNativeQuery("ALTER TABLE user AUTO_INCREMENT = 1").executeUpdate();*/
 		JsonNode array = mapper.readValue(response.getBody(), JsonNode.class);
 
 		List<User> users = new ArrayList<>();
