@@ -26,9 +26,8 @@ public class AbsenceController {
 	public List<Absence> getAbsences(@RequestParam Optional<AbsenceStatus> status) {
 		if (status.isPresent()) {
 			return absenceRepository.findByStatus(status.get());
-		} else {
-			return absenceRepository.findAll();
 		}
+		return absenceRepository.findAll();
 	}
 }
 
