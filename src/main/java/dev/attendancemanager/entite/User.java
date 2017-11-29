@@ -1,7 +1,6 @@
 package dev.attendancemanager.entite;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
@@ -46,6 +45,12 @@ public class User {
 	@Transient
 	@OneToMany
 	private List<User> subalternes;
+	
+	/**
+	 * absences : List<Absence>
+	 */
+	@OneToMany
+	private List<Absence> absences;
 	
 	/** departement : Departement 
 	 * @see Departement
@@ -184,6 +189,14 @@ public class User {
 		this.departement = departement;
 	}
 	
+	public List<Absence> getAbsences() {
+		return absences;
+	}
+
+	public void setAbsences(List<Absence> absences) {
+		this.absences = absences;
+	}
+
 	public List<String> getMatriculeSubalternes(){
 		return subalternes.stream().map(User::getMatricule).collect(Collectors.toList());
 	}
