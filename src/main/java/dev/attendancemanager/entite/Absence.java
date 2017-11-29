@@ -7,8 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.ManyToOne;
+
 
 /**
  * @author Florent Callaou
@@ -32,16 +32,32 @@ public class Absence {
 	private LocalDate endDate;
 	
 	/** motif : String */
+	@Column
 	private String motif;
 	
-	/** status : String */
-	private String status;
-	
-	/** type : TypeAbscence 
-	 * @see TypeAbscence
+
+	/** type : AbscenceType 
+	 * @see AbscenceType
+
 	*/
-	private TypeAbscence type;
+	@Column
+	private AbscenceType type;
 	
+	/**
+	 * status : AbsenceStatus
+	 * @see AbsenceStatus
+	 */
+	@Column
+	private AbsenceStatus status;
+
+	/**
+	 * user : User
+	 * @See User
+	 */
+	@ManyToOne
+	private User user;
+
+
 	/**
 	 * Empty constructor
 	 */
@@ -57,7 +73,9 @@ public class Absence {
 	 * @param status
 	 * @param type
 	 */
-	public Absence(LocalDate beginDate, LocalDate endDate, String motif, String status, TypeAbscence type) {
+
+	public Absence(LocalDate beginDate, LocalDate endDate, String motif, AbsenceStatus status, AbscenceType type) {
+
 		super();
 		this.beginDate = beginDate;
 		this.endDate = endDate;
@@ -121,29 +139,52 @@ public class Absence {
 	/** Setter for status
 	 * @param status the status to set
 	 */
-	public String getStatus() {
-		return status;
-	}
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
 
 	/** Getter for type
 	 * @return the type
 	 */
-	public TypeAbscence getType() {
+	public AbscenceType getType() {
 		return type;
 	}
 	/** Setter for type
 	 * @param type the type to set
 	 */
-	public void setType(TypeAbscence type) {
+	public void setType(AbscenceType type) {
 		this.type = type;
 	}
-
 	
+	/**
+	 *  Getter for status
+	 * @return
+	 */
+	public AbsenceStatus getStatus() {
+		return status;
+	}
 
 
+	/**
+	 * Setter for status
+	 * @param status
+	 */
+	public void setStatus(AbsenceStatus status) {
+		this.status = status;
+	}
+	/**
+	 * Getter for user 
+	 * @return user
+	 */
+	public User getUser() {
+		return user;
+	}
+
+
+	/**
+	 * Setter for user
+	 * @param user
+	 */
+	public void setUser(User user) {
+		this.user = user;
+	}
 	
 }

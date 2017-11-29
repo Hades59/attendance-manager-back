@@ -22,9 +22,10 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import dev.attendancemanager.entite.AbscenceType;
 import dev.attendancemanager.entite.Absence;
+import dev.attendancemanager.entite.AbsenceStatus;
 import dev.attendancemanager.entite.Departement;
-import dev.attendancemanager.entite.TypeAbscence;
 import dev.attendancemanager.entite.User;
 import dev.attendancemanager.repository.AbsenceRepository;
 import dev.attendancemanager.repository.UserRepository;
@@ -76,30 +77,30 @@ public class UsersListener {
 				LocalDate.of(2017, 12, 5),
 				LocalDate.of(2017, 12, 7),
 				"Mal au cul",
-				"VALIDEE",
-				TypeAbscence.CONGE_PAYE));
+				AbsenceStatus.INITIALE,
+				AbscenceType.CONGE_PAYE));
 		
 		abscences.add(new Absence(
 				LocalDate.of(2017, 12, 17),
 				LocalDate.of(2017, 12, 27),
 				"Parce que",
-				"VALIDEE",
-				TypeAbscence.CONGE_PAYE));
+				AbsenceStatus.INITIALE,
+				AbscenceType.CONGE_PAYE));
 		
 		abscences.add(new Absence(
 				LocalDate.of(2017, 12, 29),
 				LocalDate.of(2018, 2, 17),
 				"Voila",
-				"EN ATTENTE",
-				TypeAbscence.RTT));
+				AbsenceStatus.INITIALE,
+				AbscenceType.RTT));
 		
 		abscences.add(new Absence(
 				LocalDate.of(2017, 11, 13),
 				LocalDate.of(2018, 3, 17),
 				"Voila",
-				"INITIALE",
-				TypeAbscence.RTT));
-				
+				AbsenceStatus.INITIALE,
+				AbscenceType.RTT));
+				 
 		abscences.forEach(absenceRepository::save);
 	
 	}
@@ -107,7 +108,8 @@ public class UsersListener {
 	
 	private void rebase() throws IOException {
 
-	    entityManager.createNativeQuery("TRUNCATE TABLE User").executeUpdate();
+//		entityManager.createNativeQuery("TRUNCATE TABLE Absence").executeUpdate();
+//	    entityManager.createNativeQuery("TRUNCATE TABLE User").executeUpdate();
 
 		JsonNode array = mapper.readValue(response.getBody(), JsonNode.class);
 
