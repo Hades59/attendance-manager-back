@@ -2,6 +2,7 @@ package dev.attendancemanager.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,4 +33,16 @@ public class UserController {
 		
 		return absence;
 	}
+	
+	@DeleteMapping(path="/{matricule}/absences/{id}")
+	public Absence deleteAbsence(@PathVariable String matricule, @PathVariable int id){
+		Absence absence = absenceRepository.findOne(id);
+		
+		absenceRepository.delete(id);
+		
+		
+		return absence;
+	}
+	
+	
 }

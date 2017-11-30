@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 import dev.attendancemanager.entite.Absence;
 import dev.attendancemanager.entite.AbsenceStatus;
 import dev.attendancemanager.repository.AbsenceRepository;
-
 /**
- * @author ETY8
+ * 
+ * @author ETY23
  *
  */
+
 @RestController
 @RequestMapping("/absences")
 @CrossOrigin(origins = "*")
@@ -26,16 +27,18 @@ public class AbsenceController {
 	AbsenceRepository absenceRepository;
 
 	@GetMapping
+	public List<Absence> absenceList(){
+		return absenceRepository.findAll();
+	}
+
 	public List<Absence> getAbsences(@RequestParam Optional<AbsenceStatus> status) {
 		if (status.isPresent()) {
 			return absenceRepository.findByStatus(status.get());
 		}
 		return absenceRepository.findAll();
 	}
+	
+	
 
-
-	public List<Absence> absenceList(){
-		return absenceRepository.findAll();
-	}
 
 }
