@@ -1,8 +1,10 @@
 package dev.attendancemanager.entite;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -26,37 +28,50 @@ public class User {
 	private Integer id;
 	
 	/** matricule : String */
+	@Column
 	private String matricule;
 	
 	/** firstname : String */
+	@Column
 	private String firstname;
 	
 	/** lastname : String */
+	@Column
 	private String lastname;
 	
 	/** email : String */
+	@Column
 	private String email;
 	
 	/** password : String */
+	@Column
 	private String password;
+	
+	private boolean actif = true;
 	
 	/** subalternes : List<User> */
 	@JsonIgnore
 	@Transient
 	@OneToMany
-	private List<User> subalternes;
+	private List<User> subalternes = new ArrayList<>();
 	
 	/**
 	 * absences : List<Absence>
 	 */
-	@OneToMany
-	private List<Absence> absences;
+	@OneToMany(mappedBy="user")
+	@JsonIgnore
+	private List<Absence> absences = new ArrayList<>();
 	
 	/** departement : Departement 
 	 * @see Departement
 	*/
+	@Column
 	@Enumerated
 	private Departement departement;
+	
+	@Column
+	@Enumerated
+	private Role role;
 
 	/**
 	 * Empty constructor
@@ -75,7 +90,7 @@ public class User {
 	 * @param subalternes
 	 * @param departement
 	 */
-	public User(String matricule, String firstname, String lastname, String email, String password, Departement departement) {
+	public User(String matricule, String firstname, String lastname, String email, String password, Departement departement, Role role) {
 		super();
 		this.matricule = matricule;
 		this.firstname = firstname;
@@ -83,6 +98,7 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.departement = departement;
+		this.role = role;
 	}
 
 	/** Getter for id
@@ -161,6 +177,22 @@ public class User {
 	 */
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public boolean isActif() {
+		return actif;
+	}
+
+	public void setActif(boolean actif) {
+		this.actif = actif;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 	/** Getter for subalternes

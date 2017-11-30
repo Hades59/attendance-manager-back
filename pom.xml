@@ -69,11 +69,23 @@
 		    <artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-java8</artifactId>
+		</dependency>
+		<dependency>
 		    <groupId>io.jsonwebtoken</groupId>
 		    <artifactId>jjwt</artifactId>
 		    <version>0.7.0</version>
 		</dependency>
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-hateoas</artifactId>
+        </dependency>
 
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -93,7 +105,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<jdbc.driver>org.mariadb.jdbc.Driver</jdbc.driver>
+				<jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
 				<jdbc.url>jdbc:mysql://localhost:3306/attendances</jdbc.url>
 				<jdbc.user>root</jdbc.user>
 				<jdbc.pass></jdbc.pass>
@@ -106,8 +118,8 @@
 					<groupId>mysql</groupId>
 					<artifactId>mysql-connector-java</artifactId>
 				</dependency>
-
 			</dependencies>
+			
 		</profile>
 		<profile>
 			<id>prod</id>
@@ -120,13 +132,13 @@
 				<jdbc.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</jdbc.dialect>
 				<jdbc.connections.max.active>2</jdbc.connections.max.active>
 			</properties>
+			
 			<dependencies>
-				<dependency>
-					<groupId>mysql</groupId>
-					<artifactId>mysql-connector-java</artifactId>
-				</dependency>
-
-			</dependencies>
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                </dependency>
+            </dependencies>
 		</profile>
 	</profiles>
 
