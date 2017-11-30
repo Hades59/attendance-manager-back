@@ -18,6 +18,7 @@ import dev.attendancemanager.repository.AbsenceRepository;
  * @author ETY23
  *
  */
+
 @RestController
 @RequestMapping("/absences")
 @CrossOrigin(origins = "*")
@@ -36,6 +37,8 @@ public class AbsenceController {
 		}
 		return absenceRepository.findAll();
 	}
+	
+	
 
 
 }
