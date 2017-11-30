@@ -1,6 +1,6 @@
 package dev.attendancemanager.entite;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,29 +23,27 @@ public class Absence {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	/** beginDate : LocalDateTime */
-	@Column(name = "begin_date")
-	private LocalDateTime beginDate;
+	/** beginDate : LocalDate*/
+	@Column(columnDefinition = "TIMESTAMP")
+	private LocalDate beginDate;
 	
-	/** endDate : LocalDateTime */
-	@Column(name = "end_date")
-	private LocalDateTime endDate;
+	/** endDate : LocalDate*/
+	@Column(columnDefinition = "TIMESTAMP")
+	private LocalDate endDate;
 	
 	/** motif : String */
-	@Column
 	private String motif;
 	
-	/** type : AbscenceType 
-	 * @see AbscenceType
+	
+	/** type : TypeAbscence 
+	 * @see TypeAbscence
 	*/
-	@Column
 	private AbscenceType type;
 	
 	/**
 	 * status : AbsenceStatus
 	 * @see AbsenceStatus
 	 */
-	@Column
 	private AbsenceStatus status;
 
 	/**
@@ -68,13 +66,15 @@ public class Absence {
 	 * @param beginDate
 	 * @param endDate
 	 * @param motif
+	 * @param status
 	 * @param type
 	 */
-	public Absence(LocalDateTime beginDate, LocalDateTime endDate, String motif, AbscenceType type) {
+	public Absence(LocalDate beginDate, LocalDate endDate, String motif, AbscenceType type, AbsenceStatus status) {
 		super();
 		this.beginDate = beginDate;
 		this.endDate = endDate;
 		this.motif = motif;
+		this.status = status;
 		this.setType(type);
 	}
 
@@ -94,29 +94,29 @@ public class Absence {
 	/** Getter for beginDate
 	 * @return the beginDate
 	 */
-	public LocalDateTime getBeginDate() {
+	public LocalDate getBeginDate() {
 		return beginDate;
 	}
 	/** Setter for beginDate
 	 * @param beginDate the beginDate to set
 	 */
-	public void setBeginDate(LocalDateTime beginDate) {
+	public void setBeginDate(LocalDate beginDate) {
 		this.beginDate = beginDate;
 	}
 
 	/** Getter for endDate
 	 * @return the endDate
 	 */
-	public LocalDateTime getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
 	/** Setter for endDate
 	 * @param endDate the endDate to set
 	 */
-	public void setEndDate(LocalDateTime endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
-
+	
 	/** Getter for motif
 	 * @return the motif
 	 */
@@ -128,6 +128,17 @@ public class Absence {
 	 */
 	public void setMotif(String motif) {
 		this.motif = motif;
+	}
+	
+	/** Setter for status
+	 * @param status the status to set
+	 */
+	public AbsenceStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(AbsenceStatus status) {
+		this.status = status;
 	}
 
 	/** Getter for type
@@ -144,28 +155,12 @@ public class Absence {
 	}
 	
 	/**
-	 *  Getter for status
-	 * @return
-	 */
-	public AbsenceStatus getStatus() {
-		return status;
-	}
-
-	/**
-	 * Setter for status
-	 * @param status
-	 */
-	public void setStatus(AbsenceStatus status) {
-		this.status = status;
-	}
-	/**
 	 * Getter for user 
 	 * @return user
 	 */
 	public User getUser() {
 		return user;
 	}
-
 	/**
 	 * Setter for user
 	 * @param user
