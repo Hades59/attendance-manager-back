@@ -27,6 +27,11 @@ public class Absence {
 	@Column(columnDefinition = "TIMESTAMP")
 	private LocalDate beginDate;
 	
+	@Override
+	public String toString() {
+		return "Absence [id=" + id + ", beginDate=" + beginDate + ", endDate=" + endDate + ", motif=" + motif
+				+ ", type=" + type + ", status=" + status + ", user=" + user + "]";
+	}
 	/** endDate : LocalDate*/
 	@Column(columnDefinition = "TIMESTAMP")
 	private LocalDate endDate;

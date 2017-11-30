@@ -26,7 +26,7 @@ public class UserController {
 	private UserRepository userRepository;
 
 	/**
-	 * Method for create an absence
+	 * Method for create and update an absence
 	 * 
 	 * @param matricule
 	 * @param absence
@@ -36,7 +36,7 @@ public class UserController {
 	public Absence createAbsence(@PathVariable String matricule, @RequestBody Absence absence) {
 
 		// si l'id est valoriser => update
-
+		System.out.println(absence);
 		absence.setStatus(AbsenceStatus.INITIALE);
 		System.out.println("###############################################Mon id :"+absence.getId());
 		User user = userRepository.findByMatricule(matricule);
