@@ -4,6 +4,6 @@
 		"goal": "clean package -Pprod"
 	},
 	"deploy": {
-		"jarName": "target/top.jar"
+		"jarName": "target/attendances.jar"
 	}
 }
