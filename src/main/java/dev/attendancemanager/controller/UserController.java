@@ -3,6 +3,7 @@ package dev.attendancemanager.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.*;
 
 import dev.attendancemanager.entite.Absence;
@@ -39,4 +40,16 @@ public class UserController {
 		
 		return absence;
 	}
+	
+	@DeleteMapping(path="/{matricule}/absences/{id}")
+	public Absence deleteAbsence(@PathVariable String matricule, @PathVariable int id){
+		Absence absence = absenceRepository.findOne(id);
+		
+		absenceRepository.delete(id);
+		
+		
+		return absence;
+	}
+	
+	
 }

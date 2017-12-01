@@ -107,7 +107,7 @@ public class InitializeDatabaseListener {
 				"Voila",
 				AbscenceType.RTT,
 				AbsenceStatus.EN_ATTENTE_VALIDATION));
-				
+				 
 		abscences.forEach(absenceRepository::save);
 	
 	}
@@ -137,6 +137,10 @@ public class InitializeDatabaseListener {
 
 			users.add(new User(matricule, firstname, lastname, email, password, departement, role));
 		});
+
+		entityManager.createNativeQuery("TRUNCATE TABLE absence").executeUpdate();
+	    entityManager.createNativeQuery("DELETE FROM user").executeUpdate();
+	    entityManager.createNativeQuery("ALTER TABLE user AUTO_INCREMENT = 1").executeUpdate();
 
 		Stream.of(users).forEach(userRepository::save);
 		lastHash = response.getBody().hashCode();
