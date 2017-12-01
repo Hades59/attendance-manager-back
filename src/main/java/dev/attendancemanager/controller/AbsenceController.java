@@ -26,8 +26,8 @@ public class AbsenceController {
 	@Autowired
 	AbsenceRepository absenceRepository;
 
+	//@Secured("ROLE_EMPLOYE")
 	@GetMapping
-	@Secured("ROLE_EMPLOYE")
 	public List<Absence> getAbsences(@RequestParam Optional<AbsenceStatus> status) {
 		if (status.isPresent()) {
 			absenceRepository.findByStatus(status.get());
