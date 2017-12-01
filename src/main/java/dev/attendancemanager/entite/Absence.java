@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * @author Florent Callaou
  * Manage absence of an user 
@@ -23,11 +25,11 @@ public class Absence {
 	private Integer id;
 	
 	/** beginDate : LocalDate*/
-	@Column(columnDefinition = "TIMESTAMP")
+	@Column
 	private LocalDate beginDate;
 	
 	/** endDate : LocalDate*/
-	@Column(columnDefinition = "TIMESTAMP")
+	@Column
 	private LocalDate endDate;
 	
 	/** motif : String */
@@ -48,8 +50,8 @@ public class Absence {
 	 * @See User
 	 */
 	@ManyToOne
+	@JsonIgnore
 	private User user;
-
 
 	/**
 	 * Empty constructor
