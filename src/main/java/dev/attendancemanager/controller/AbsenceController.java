@@ -26,15 +26,11 @@ import dev.attendancemanager.repository.AbsenceRepository;
 @RequestMapping("/absences")
 @CrossOrigin(origins = "*")
 public class AbsenceController {
+	
 	@Autowired
 	AbsenceRepository absenceRepository;
 
-	//@Secured("ROLE_EMPLOYE")
 	@GetMapping
-	public List<Absence> absenceList(){
-		return absenceRepository.findAll();
-	}
-
 	public List<Absence> getAbsences(@RequestParam Optional<AbsenceStatus> status) {
 		if (status.isPresent()) {
 			absenceRepository.findByStatus(status.get());
