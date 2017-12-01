@@ -1,12 +1,10 @@
 package dev.attendancemanager.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.bind.annotation.*;
 
 import dev.attendancemanager.entite.Absence;
 import dev.attendancemanager.entite.AbsenceStatus;
@@ -22,6 +20,16 @@ public class UserController {
 	@Autowired private AbsenceRepository absenceRepository;
 	@Autowired private UserRepository userRepository;
 	
+	@GetMapping
+	public List<User> getUsers() {
+		return userRepository.findAll();
+	}
+	
+	@GetMapping(path="/{matricule}")
+	public User getUsersByMatricule(@PathVariable String matricule) {
+		return userRepository.findByMatricule(matricule);
+	}
+	
 	@PostMapping(path="/{matricule}/absences")
 	public Absence createAbsence(@PathVariable String matricule, @RequestBody Absence absence){
 		absence.setStatus(AbsenceStatus.INITIALE);
@@ -32,4 +40,16 @@ public class UserController {
 		
 		return absence;
 	}
+	
+	@DeleteMapping(path="/{matricule}/absences/{id}")
+	public Absence deleteAbsence(@PathVariable String matricule, @PathVariable int id){
+		Absence absence = absenceRepository.findOne(id);
+		
+		absenceRepository.delete(id);
+		
+		
+		return absence;
+	}
+	
+	
 }

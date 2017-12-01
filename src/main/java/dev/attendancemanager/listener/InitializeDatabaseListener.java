@@ -14,9 +14,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -26,38 +25,38 @@ import dev.attendancemanager.entite.AbscenceType;
 import dev.attendancemanager.entite.Absence;
 import dev.attendancemanager.entite.AbsenceStatus;
 import dev.attendancemanager.entite.Departement;
+import dev.attendancemanager.entite.Role;
 import dev.attendancemanager.entite.User;
 import dev.attendancemanager.repository.AbsenceRepository;
 import dev.attendancemanager.repository.UserRepository;
 
-@RestController
-@RequestMapping("/*")
 @EnableScheduling
-public class UsersListener {
+@Service
+public class InitializeDatabaseListener {
 
-
-	@Autowired
-	private UserRepository userRepository;
+	@Autowired private UserRepository userRepository;
 	
-	@Autowired
-	private AbsenceRepository absenceRepository;
+	@Autowired private AbsenceRepository absenceRepository;
+	
+	@Autowired private EntityManager entityManager;
 	
 	private RestTemplate restTemplate = new RestTemplate();
-	private ObjectMapper mapper = new ObjectMapper();
+    @Autowired private ObjectMapper mapper;
 	private ResponseEntity<String> response;
 	private Integer lastHash = null;
 	private String url = "https://raw.githubusercontent.com/DiginamicFormation/ressources-atelier/master/users.json";
 
-	@Autowired 
-	private EntityManager entityManager;
-
 	@Scheduled(fixedRate  = 20000)
 	@Transactional
-	public void update() throws IOException{
+	public void update() throws IOException {
 
 		ResponseEntity<String> responseUpdated = restTemplate.getForEntity(url, String.class);
 		if(responseUpdated.getBody().hashCode() != lastHash){
 			response = responseUpdated;
+
+		    entityManager.createNativeQuery("DELETE FROM user").executeUpdate();
+		    entityManager.createNativeQuery("ALTER TABLE user AUTO_INCREMENT = 1").executeUpdate();
+		    
 			rebase();
 		}
 
@@ -68,24 +67,32 @@ public class UsersListener {
 	public void initialize() throws IOException{
 		response = restTemplate.getForEntity(url, String.class);
 
-		rebase();
-		
+		List<User> users = rebase();
 		
 		List<Absence> abscences = new ArrayList<>();
 		
-		abscences.add(new Absence(
+		Absence absence = new Absence(
 				LocalDate.of(2017, 12, 5),
 				LocalDate.of(2017, 12, 7),
 				"Mal au cul",
 				AbscenceType.CONGE_PAYE,
-				AbsenceStatus.EN_ATTENTE_VALIDATION));
+				AbsenceStatus.EN_ATTENTE_VALIDATION);
 		
-		abscences.add(new Absence(
+		Absence absence2 = new Absence(
 				LocalDate.of(2017, 12, 17),
 				LocalDate.of(2017, 12, 27),
 				"Parce que",
 				AbscenceType.CONGE_PAYE,
-				AbsenceStatus.EN_ATTENTE_VALIDATION));
+				AbsenceStatus.EN_ATTENTE_VALIDATION);
+		
+		
+		absence.setUser(users.get(1));
+		
+		abscences.add(absence);
+		
+		absence2.setUser(users.get(0));
+		
+		abscences.add(absence2);
 		
 		abscences.add(new Absence(
 				LocalDate.of(2017, 12, 29),
@@ -100,14 +107,13 @@ public class UsersListener {
 				"Voila",
 				AbscenceType.RTT,
 				AbsenceStatus.EN_ATTENTE_VALIDATION));
-				
+				 
 		abscences.forEach(absenceRepository::save);
 	
 	}
 
 	
-	private void rebase() throws IOException {
-
+	private List<User> rebase() throws IOException {
 		JsonNode array = mapper.readValue(response.getBody(), JsonNode.class);
 
 		List<User> users = new ArrayList<>();
@@ -119,6 +125,7 @@ public class UsersListener {
 			String email = jsonNode.get("email").textValue();
 			String password = jsonNode.get("password").textValue();
 			Departement departement = null;
+			Role role = Role.ROLE_EMPLOYE;
 
 			for (Departement dep : Departement.values()){
 
@@ -128,15 +135,13 @@ public class UsersListener {
 				}
 			}
 
-			users.add(new User(matricule, firstname, lastname, email, password, departement));
+			users.add(new User(matricule, firstname, lastname, email, password, departement, role));
 		});
-
-		entityManager.createNativeQuery("TRUNCATE TABLE absence").executeUpdate();
-	    entityManager.createNativeQuery("DELETE FROM user").executeUpdate();
-	    entityManager.createNativeQuery("ALTER TABLE user AUTO_INCREMENT = 1").executeUpdate();
 
 		Stream.of(users).forEach(userRepository::save);
 		lastHash = response.getBody().hashCode();
+		
+		return users;
 	}
 
 }
