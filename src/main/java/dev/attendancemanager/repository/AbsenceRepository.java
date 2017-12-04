@@ -12,7 +12,4 @@ import dev.attendancemanager.entite.AbsenceStatus;
 public interface AbsenceRepository extends JpaRepository<Absence, Integer>{
 	List<Absence> findByStatus(AbsenceStatus status);
 	
-	@Query("select a from Absence a where a.user.matricule=:matricule")
-	List<Absence> findByMatricule(@Param("matricule") String matricule);
-
 }
