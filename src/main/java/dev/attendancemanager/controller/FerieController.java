@@ -34,10 +34,8 @@ public class FerieController {
 		FerieRepository ferieRepository;
 
 		@GetMapping
-		public List<Ferie> getAbsences(@RequestParam(value="type", required=false) FerieType type) {
-			if (type != null) {
-				return ferieRepository.findByType(type);
-			}
+		public List<Ferie> getFeries() {
+			
 			return ferieRepository.findAll();
 		}
 	

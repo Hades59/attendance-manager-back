@@ -25,9 +25,12 @@ import dev.attendancemanager.entite.AbscenceType;
 import dev.attendancemanager.entite.Absence;
 import dev.attendancemanager.entite.AbsenceStatus;
 import dev.attendancemanager.entite.Departement;
+import dev.attendancemanager.entite.Ferie;
+import dev.attendancemanager.entite.FerieType;
 import dev.attendancemanager.entite.Role;
 import dev.attendancemanager.entite.User;
 import dev.attendancemanager.repository.AbsenceRepository;
+import dev.attendancemanager.repository.FerieRepository;
 import dev.attendancemanager.repository.UserRepository;
 
 @EnableScheduling
@@ -109,8 +112,12 @@ public class InitializeDatabaseListener {
 				AbsenceStatus.EN_ATTENTE_VALIDATION));
 				 
 		abscences.forEach(absenceRepository::save);
+		
+		
 	
 	}
+	
+		
 
 	
 	private List<User> rebase() throws IOException {
