@@ -32,10 +32,14 @@ public class AbsenceController {
 	AbsenceRepository absenceRepository;
 
 	@GetMapping
-	public List<Absence> getAbsences(@RequestParam(value="status", required=false) AbsenceStatus status) {
-		if (status != null) {
-			return absenceRepository.findByStatus(status);
+	public List<Absence> getAbsences(@RequestParam Optional<AbsenceStatus> status) {
+		if (status.isPresent()) {
+			absenceRepository.findByStatus(status.get());
 		}
 		return absenceRepository.findAll();
 	}
+	
+	
+
+
 }
