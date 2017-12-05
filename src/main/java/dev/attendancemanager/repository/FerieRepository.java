@@ -3,7 +3,9 @@
  */
 package dev.attendancemanager.repository;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -23,5 +25,6 @@ public interface FerieRepository extends JpaRepository<Ferie, Integer>{
 	 * @return
 	 */
 	List<Ferie> findByType(FerieType type);
+	Optional<Ferie> findByDate(LocalDate date);
 
 }

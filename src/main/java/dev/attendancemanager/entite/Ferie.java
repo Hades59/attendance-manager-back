@@ -21,6 +21,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Ferie {
 
+	@Override
+	public String toString() {
+		return "Ferie [id=" + id + ", date=" + date + ", commentaire=" + commentaire + ", type=" + type + "]";
+	}
+
 	/** id : Integer */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
