@@ -1,5 +1,7 @@
 package dev.attendancemanager.configuration;
 
+import java.util.Arrays;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import dev.attendancemanager.security.JWTAuthenticationFilter;
 import dev.attendancemanager.security.JWTLoginFilter;
@@ -24,9 +29,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests()
+		http.cors().and().csrf().disable().authorizeRequests()
+			.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 			.antMatchers("/").permitAll()
 			.antMatchers(HttpMethod.POST, "/auth").permitAll()
+			
 			.and()
 			// We filter the api/login requests
 			.addFilterBefore(new JWTLoginFilter("/auth", authenticationManager()),
@@ -43,16 +50,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		// Create a default account
-		/*auth.inMemoryAuthentication()
-			.withUser("admin")
-			.password("admin")
-			.roles("ADMIN");*/
-		
 		auth.jdbcAuthentication()
 			.dataSource(dataSource)
 			.passwordEncoder(passwordEncoder)
 			.usersByUsernameQuery("select MATRICULE, PASSWORD, ACTIF from USER where MATRICULE=?")
 			.authoritiesByUsernameQuery("select MATRICULE, ROLE from USER where MATRICULE=?");
 	}
+	
+	/*
+	
+	@Bean
+    CorsConfigurationSource corsConfigurationSource() {
+	    	CorsConfiguration configuration = new CorsConfiguration();
+	    	configuration.setAllowedOrigins(Arrays.asList("*"));
+	    	configuration.setAllowedMethods(Arrays.asList("POST", "GET",  "PUT", "DELETE", "OPTIONS"));
+	    	UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	    	source.registerCorsConfiguration("/**", configuration);
+	    	return source;
+    }
+    */
 }
