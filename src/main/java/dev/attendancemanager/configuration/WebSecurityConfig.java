@@ -49,17 +49,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.usersByUsernameQuery("select MATRICULE, PASSWORD, ACTIF from USER where MATRICULE=?")
 			.authoritiesByUsernameQuery("select MATRICULE, ROLE from USER where MATRICULE=?");
 	}
-	
-	/*
-	
-	@Bean
-    CorsConfigurationSource corsConfigurationSource() {
-	    	CorsConfiguration configuration = new CorsConfiguration();
-	    	configuration.setAllowedOrigins(Arrays.asList("*"));
-	    	configuration.setAllowedMethods(Arrays.asList("POST", "GET",  "PUT", "DELETE", "OPTIONS"));
-	    	UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-	    	source.registerCorsConfiguration("/**", configuration);
-	    	return source;
-    }
-    */
 }
