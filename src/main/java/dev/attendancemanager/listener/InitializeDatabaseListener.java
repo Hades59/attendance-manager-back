@@ -39,6 +39,8 @@ public class InitializeDatabaseListener {
 
 	@Autowired private UserRepository userRepository;
 	
+	@Autowired private FerieRepository ferieRepository;
+	
 	@Autowired private AbsenceRepository absenceRepository;
 	
 	@Autowired private EntityManager entityManager;
@@ -71,6 +73,8 @@ public class InitializeDatabaseListener {
 		response = restTemplate.getForEntity(url, String.class);
 
 		List<User> users = rebase();
+		
+		List<Ferie> feries = new ArrayList<>();
 		
 		List<Absence> abscences = new ArrayList<>();
 		
@@ -113,8 +117,22 @@ public class InitializeDatabaseListener {
 				 
 		abscences.forEach(absenceRepository::save);
 		
+		Ferie ferie = new Ferie(
+				LocalDate.of(2018, 5, 1),
+				FerieType.FERIE,
+				"Fête du travail");
 		
-	
+		Ferie ferie2 = new Ferie(
+				LocalDate.of(2018, 8, 14),
+				FerieType.FERIE,
+				"Fête Nationale");
+		
+		
+		feries.add(ferie);
+		feries.add(ferie2);
+		feries.forEach(ferieRepository::save);
+		
+	    
 	}
 	
 		
