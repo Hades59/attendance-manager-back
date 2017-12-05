@@ -30,9 +30,7 @@ public class Ferie {
 	@Column
 	private LocalDate date;
 	
-	
-	/** jour: String */
-	private String jour;
+
 	
 	/** commentaire: String */
 	private String commentaire;
@@ -41,9 +39,7 @@ public class Ferie {
 	 * @see FerieType **/
 	private FerieType type;
 	
-	@ManyToOne
-	@JsonIgnore
-	private User user;
+
 
 	/**
 	 * Empty constructor
@@ -52,10 +48,9 @@ public class Ferie {
 		super();
 	}
 	
-	public Ferie (LocalDate date, String jour, String commentaire, FerieType type) {
+	public Ferie (LocalDate date, FerieType type, String commentaire) {
 		super();
 		this.date = date;
-		this.jour = jour;
 		this.commentaire = commentaire;
 		this.type = type;
 		
@@ -77,13 +72,6 @@ public class Ferie {
 		this.date = date;
 	}
 
-	public String getJour() {
-		return jour;
-	}
-
-	public void setJour(String jour) {
-		this.jour = jour;
-	}
 
 	public String getCommentaire() {
 		return commentaire;
@@ -101,13 +89,7 @@ public class Ferie {
 		this.type = type;
 	}
 
-	public User getUser() {
-		return user;
-	}
 
-	public void setUser(User user) {
-		this.user = user;
-	}
 	
 	
 	
