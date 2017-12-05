@@ -150,7 +150,7 @@ public class InitializeDatabaseListener {
 			String email = jsonNode.get("email").textValue();
 			String password = jsonNode.get("password").textValue();
 			Departement departement = null;
-			Role role = Role.ROLE_EMPLOYE;
+			Role role = Role.ROLE_MANAGER;
 
 			for (Departement dep : Departement.values()){
 
