@@ -10,8 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import dev.attendancemanager.security.JWTAuthenticationFilter;
 import dev.attendancemanager.security.JWTLoginFilter;
 
 @Configuration
@@ -24,9 +22,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests()
+		http.cors().and().csrf().disable().authorizeRequests()
+			.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 			.antMatchers("/").permitAll()
 			.antMatchers(HttpMethod.POST, "/auth").permitAll()
+			
 			.and()
 			// We filter the api/login requests
 			.addFilterBefore(new JWTLoginFilter("/auth", authenticationManager()),
@@ -43,12 +43,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		// Create a default account
-		/*auth.inMemoryAuthentication()
-			.withUser("admin")
-			.password("admin")
-			.roles("ADMIN");*/
-		
 		auth.jdbcAuthentication()
 			.dataSource(dataSource)
 			.passwordEncoder(passwordEncoder)
