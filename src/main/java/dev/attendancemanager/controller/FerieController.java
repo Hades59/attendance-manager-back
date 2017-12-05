@@ -43,7 +43,7 @@ public class FerieController {
 		}
 	
 		@DeleteMapping(path="/{id}")
-		public Ferie deleteFerie(@PathVariable LocalDate Date, @PathVariable int id){
+		public Ferie deleteFerie(@PathVariable int id){
 			Ferie ferie = ferieRepository.findOne(id);
 			
 			ferieRepository.delete(id);
