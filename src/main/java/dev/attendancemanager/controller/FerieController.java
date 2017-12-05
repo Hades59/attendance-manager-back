@@ -3,11 +3,14 @@
  */
 package dev.attendancemanager.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,4 +42,13 @@ public class FerieController {
 			return ferieRepository.findAll();
 		}
 	
+		@DeleteMapping(path="/{id}")
+		public Ferie deleteFerie(@PathVariable LocalDate Date, @PathVariable int id){
+			Ferie ferie = ferieRepository.findOne(id);
+			
+			ferieRepository.delete(id);
+			
+			
+			return ferie;
+		}
 }

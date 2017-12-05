@@ -1,5 +1,6 @@
 package dev.attendancemanager.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 import dev.attendancemanager.entite.Absence;
 import dev.attendancemanager.entite.AbsenceStatus;
+import dev.attendancemanager.entite.Ferie;
 import dev.attendancemanager.entite.User;
 import dev.attendancemanager.repository.AbsenceRepository;
+import dev.attendancemanager.repository.FerieRepository;
 import dev.attendancemanager.repository.UserRepository;
 
 @RestController
@@ -18,6 +21,7 @@ import dev.attendancemanager.repository.UserRepository;
 public class UserController {
 	
 	@Autowired private AbsenceRepository absenceRepository;
+	@Autowired private FerieRepository ferieRepository;
 	@Autowired private UserRepository userRepository;
 	
 	@GetMapping
@@ -49,6 +53,16 @@ public class UserController {
 		
 		
 		return absence;
+	}
+	
+	@DeleteMapping(path="/{date}/ferie/{id}")
+	public Ferie deleteFerie(@PathVariable LocalDate Date, @PathVariable int id){
+		Ferie ferie = ferieRepository.findOne(id);
+		
+		ferieRepository.delete(id);
+		
+		
+		return ferie;
 	}
 	
 	
