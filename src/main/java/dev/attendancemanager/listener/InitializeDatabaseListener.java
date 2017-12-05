@@ -25,9 +25,12 @@ import dev.attendancemanager.entite.AbscenceType;
 import dev.attendancemanager.entite.Absence;
 import dev.attendancemanager.entite.AbsenceStatus;
 import dev.attendancemanager.entite.Departement;
+import dev.attendancemanager.entite.Ferie;
+import dev.attendancemanager.entite.FerieType;
 import dev.attendancemanager.entite.Role;
 import dev.attendancemanager.entite.User;
 import dev.attendancemanager.repository.AbsenceRepository;
+import dev.attendancemanager.repository.FerieRepository;
 import dev.attendancemanager.repository.UserRepository;
 
 @EnableScheduling
@@ -35,6 +38,8 @@ import dev.attendancemanager.repository.UserRepository;
 public class InitializeDatabaseListener {
 
 	@Autowired private UserRepository userRepository;
+	
+	@Autowired private FerieRepository ferieRepository;
 	
 	@Autowired private AbsenceRepository absenceRepository;
 	
@@ -68,6 +73,8 @@ public class InitializeDatabaseListener {
 		response = restTemplate.getForEntity(url, String.class);
 
 		List<User> users = rebase();
+		
+		List<Ferie> feries = new ArrayList<>();
 		
 		List<Absence> abscences = new ArrayList<>();
 		
@@ -109,8 +116,26 @@ public class InitializeDatabaseListener {
 				AbsenceStatus.EN_ATTENTE_VALIDATION));
 				 
 		abscences.forEach(absenceRepository::save);
-	
+		
+		Ferie ferie = new Ferie(
+				LocalDate.of(2018, 5, 1),
+				FerieType.FERIE,
+				"Fête du travail");
+		
+		Ferie ferie2 = new Ferie(
+				LocalDate.of(2018, 8, 14),
+				FerieType.FERIE,
+				"Fête Nationale");
+		
+		
+		feries.add(ferie);
+		feries.add(ferie2);
+		feries.forEach(ferieRepository::save);
+		
+	    
 	}
+	
+		
 
 	
 	private List<User> rebase() throws IOException {
