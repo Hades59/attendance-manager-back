@@ -56,7 +56,6 @@ public class FerieController {
 	public List<Ferie> updateAbsence(@RequestBody Ferie jf) {
 
 		ferieRepository.save(jf);
-		System.out.println("\n\nModifacation ok##################################################\n\n");
 
 		return ferieRepository.findAll();
 
