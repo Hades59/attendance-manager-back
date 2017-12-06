@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.EntityManager;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -156,7 +154,8 @@ public class InitializeDatabaseListener {
 		});
 		
 		List<User> usersBase = userRepository.findAll();
-		
+		users.get(1).setRole(Role.ROLE_EMPLOYE);
+		users.get(2).setRole(Role.ROLE_ADMIN);
 
 		users.stream().map(u -> {
 			

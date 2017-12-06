@@ -6,7 +6,10 @@ package dev.attendancemanager.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.security.RolesAllowed;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,13 +37,15 @@ public class FerieController {
 	FerieRepository ferieRepository;
 
 	@GetMapping
+	@Secured({"ROLE_MANAGER", "ROLE_EMPLOYE", "ROLE_ADMIN"})
 	public List<Ferie> getFeries() {
 
 		return ferieRepository.findAll();
 	}
 
 	@PostMapping()
-	public List<Ferie> createAbsence(@RequestBody Ferie jf) {
+	@Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
+	public List<Ferie> createFerie(@RequestBody Ferie jf) {
 		Optional<Ferie> ferie = ferieRepository.findByDate(jf.getDate());
 
 		if (!ferie.isPresent()) {
@@ -53,6 +58,7 @@ public class FerieController {
 	}
 
 	@PostMapping(path = "/{id}")
+	@Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
 	public List<Ferie> updateAbsence(@RequestBody Ferie jf) {
 
 		ferieRepository.save(jf);
@@ -62,6 +68,7 @@ public class FerieController {
 	}
 
 	@DeleteMapping(path = "/{id}")
+	@Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
 	public Ferie deleteFerie(@PathVariable int id) {
 		Ferie ferie = ferieRepository.findOne(id);
 

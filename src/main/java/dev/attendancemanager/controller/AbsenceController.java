@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ public class AbsenceController {
 	AbsenceRepository absenceRepository;
 
 	@GetMapping
+	@Secured({"ROLE_MANAGER", "ROLE_EMPLOYE"})
 	public List<Absence> getAbsences(@RequestParam Optional<AbsenceStatus> status) {
 		if (status.isPresent()) {
 			absenceRepository.findByStatus(status.get());
