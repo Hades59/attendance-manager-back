@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +19,6 @@ import dev.attendancemanager.repository.AbsenceRepository;
  * @author ETY23
  *
  */
-
 @RestController
 @RequestMapping("/absences")
 @CrossOrigin(origins = "*")
@@ -36,8 +34,5 @@ public class AbsenceController {
 		}
 		return absenceRepository.findAll();
 	}
-	
-	
-
 
 }

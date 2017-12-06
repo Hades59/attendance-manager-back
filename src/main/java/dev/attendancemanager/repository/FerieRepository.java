@@ -9,8 +9,6 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import dev.attendancemanager.entite.Absence;
-import dev.attendancemanager.entite.AbsenceStatus;
 import dev.attendancemanager.entite.Ferie;
 import dev.attendancemanager.entite.FerieType;
 

@@ -10,9 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * @author ETY8
@@ -20,11 +17,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 @Entity
 public class Ferie {
-
-	@Override
-	public String toString() {
-		return "Ferie [id=" + id + ", date=" + date + ", commentaire=" + commentaire + ", type=" + type + "]";
-	}
 
 	/** id : Integer */
 	@Id
@@ -35,8 +27,6 @@ public class Ferie {
 	@Column
 	private LocalDate date;
 	
-
-	
 	/** commentaire: String */
 	private String commentaire;
 	
@@ -44,8 +34,6 @@ public class Ferie {
 	 * @see FerieType **/
 	private FerieType type;
 	
-
-
 	/**
 	 * Empty constructor
 	 */
@@ -94,9 +82,4 @@ public class Ferie {
 		this.type = type;
 	}
 
-
-	
-	
-	
-	
 }
