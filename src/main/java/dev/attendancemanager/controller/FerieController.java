@@ -29,38 +29,44 @@ import dev.attendancemanager.repository.FerieRepository;
 @RequestMapping("/feries")
 @CrossOrigin(origins = "*")
 public class FerieController {
-	
-	
-		
-		@Autowired
-		FerieRepository ferieRepository;
 
-		@GetMapping
-		public List<Ferie> getFeries() {
-			
+	@Autowired
+	FerieRepository ferieRepository;
+
+	@GetMapping
+	public List<Ferie> getFeries() {
+
+		return ferieRepository.findAll();
+	}
+
+	@PostMapping()
+	public List<Ferie> createAbsence(@RequestBody Ferie jf) {
+		Optional<Ferie> ferie = ferieRepository.findByDate(jf.getDate());
+
+		if (!ferie.isPresent()) {
+			ferieRepository.save(jf);
 			return ferieRepository.findAll();
 		}
-		
-		@PostMapping()
-		public List<Ferie> createAbsence(@RequestBody Ferie jf){
-			Optional<Ferie> ferie = ferieRepository.findByDate(jf.getDate());
-			
-			if (!ferie.isPresent()){
-				ferieRepository.save(jf);
-				return ferieRepository.findAll();
-			}
-			// si la date existe déja 
-			return null;
-			
-		}
-	
-		@DeleteMapping(path="/{id}")
-		public Ferie deleteFerie(@PathVariable int id){
-			Ferie ferie = ferieRepository.findOne(id);
-			
-			ferieRepository.delete(id);
-			
-			
-			return ferie;
-		}
+		// si la date existe déja
+		return null;
+
+	}
+
+	@PostMapping(path = "/{id}")
+	public List<Ferie> updateAbsence(@RequestBody Ferie jf) {
+
+		ferieRepository.save(jf);
+
+		return ferieRepository.findAll();
+
+	}
+
+	@DeleteMapping(path = "/{id}")
+	public Ferie deleteFerie(@PathVariable int id) {
+		Ferie ferie = ferieRepository.findOne(id);
+
+		ferieRepository.delete(id);
+
+		return ferie;
+	}
 }

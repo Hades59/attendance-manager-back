@@ -24,5 +24,6 @@ public interface FerieRepository extends JpaRepository<Ferie, Integer>{
 	 */
 	List<Ferie> findByType(FerieType type);
 	Optional<Ferie> findByDate(LocalDate date);
+	Optional<Ferie> findById(int id);
 
 }
