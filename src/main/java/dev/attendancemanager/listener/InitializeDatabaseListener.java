@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 
@@ -43,24 +43,19 @@ public class InitializeDatabaseListener {
 
 	@Autowired private AbsenceRepository absenceRepository;
 
-	@Autowired private EntityManager entityManager;
-
 	private RestTemplate restTemplate = new RestTemplate();
 	@Autowired private ObjectMapper mapper;
 	private ResponseEntity<String> response;
 	private Integer lastHash = null;
 	private String url = "https://raw.githubusercontent.com/DiginamicFormation/ressources-atelier/master/users.json";
 
-	@Scheduled(fixedRate = 300000)
+	@Scheduled(fixedRate = 30000)
 	@Transactional
 	public void update() throws IOException {
 
 		ResponseEntity<String> responseUpdated = restTemplate.getForEntity(url, String.class);
 		if(responseUpdated.getBody().hashCode() != lastHash){
 			response = responseUpdated;
-
-			entityManager.createNativeQuery("DELETE FROM user").executeUpdate();
-			entityManager.createNativeQuery("ALTER TABLE user AUTO_INCREMENT = 1").executeUpdate();
 
 			rebase();
 		}
@@ -132,8 +127,7 @@ public class InitializeDatabaseListener {
 		feries.add(ferie);
 		feries.add(ferie2);
 		feries.forEach(ferieRepository::save);
-
-
+		
 	}
 
 	private List<User> rebase() throws IOException {
@@ -160,8 +154,19 @@ public class InitializeDatabaseListener {
 
 			users.add(new User(matricule, firstname, lastname, email, password, departement, role));
 		});
+		
+		List<User> usersBase = userRepository.findAll();
+		
 
-		Stream.of(users).forEach(userRepository::save);
+		users.stream().map(u -> {
+			
+			Optional<User> uB = usersBase.stream().filter(base -> base.getMatricule().equals(u.getMatricule())).findAny();
+			
+			uB.ifPresent(base -> u.setId(base.getId()));
+			return u;
+			
+		}).forEach(userRepository::save);
+		
 		lastHash = response.getBody().hashCode();
 
 		return users;
