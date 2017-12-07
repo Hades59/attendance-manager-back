@@ -1,7 +1,9 @@
 package dev.attendancemanager.security;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -18,6 +20,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import dev.attendancemanager.entite.Role;
 import dev.attendancemanager.entite.User;
 
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
@@ -31,6 +34,11 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 	public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException, IOException, ServletException {
 		User creds = new ObjectMapper()
 				.readValue(req.getInputStream(), User.class);
+		
+		List<Role> authorities = new ArrayList<>();
+		authorities.add(Role.ROLE_MANAGER);
+		authorities.add(Role.ROLE_EMPLOYE);
+		authorities.add(Role.ROLE_ADMIN);
 		
 		return getAuthenticationManager().authenticate(
 				new UsernamePasswordAuthenticationToken(
