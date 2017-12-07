@@ -98,16 +98,26 @@ public class InitializeDatabaseListener {
 				"RTT",
 				AbscenceType.RTT,
 				AbsenceStatus.EN_ATTENTE_VALIDATION);
+		
+		Absence absence5 = new Absence(
+				LocalDate.of(2018, 02, 02),
+				LocalDate.of(2018, 02, 05),
+				"RTT",
+				AbscenceType.RTT,
+				AbsenceStatus.VALIDEE);
+
 
 		absence1.setUser(users.get(1));
 		absence2.setUser(users.get(5));
 		absence3.setUser(users.get(0));
 		absence4.setUser(users.get(0));
+		absence5.setUser(users.get(2));
 
 		abscences.add(absence1);
 		abscences.add(absence2);
 		abscences.add(absence3);
 		abscences.add(absence4);
+		abscences.add(absence5);
 
 		abscences.forEach(absenceRepository::save);
 
