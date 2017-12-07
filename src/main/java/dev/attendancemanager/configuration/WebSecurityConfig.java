@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import dev.attendancemanager.security.JWTAuthenticationFilter;
 import dev.attendancemanager.security.JWTLoginFilter;
 
 @Configuration
@@ -26,18 +28,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 			.antMatchers("/").permitAll()
 			.antMatchers(HttpMethod.POST, "/auth").permitAll()
-			
+			//.anyRequest().authenticated()
 			.and()
 			// We filter the api/login requests
 			.addFilterBefore(new JWTLoginFilter("/auth", authenticationManager()),
 					UsernamePasswordAuthenticationFilter.class);
-			/*.anyRequest().authenticated()
-			.and()
-			// We filter the api/login requests
-			.addFilterBefore(new JWTLoginFilter("/auth", authenticationManager()),
-					UsernamePasswordAuthenticationFilter.class)
 			// And filter other requests to check the presence of JWT in header
-			.addFilterBefore(new JWTAuthenticationFilter(),
+			/*.addFilterBefore(new JWTAuthenticationFilter(),
 					UsernamePasswordAuthenticationFilter.class);*/
 	}
 
