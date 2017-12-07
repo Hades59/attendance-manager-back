@@ -129,13 +129,16 @@ public class Absence {
 		this.motif = motif;
 	}
 	
-	/** Setter for status
-	 * @param status the status to set
+	/** Getter for status
+	 * @return the status
 	 */
 	public AbsenceStatus getStatus() {
 		return status;
 	}
 
+	/** Setter for status
+	 * @param status the status to set
+	 */
 	public void setStatus(AbsenceStatus status) {
 		this.status = status;
 	}

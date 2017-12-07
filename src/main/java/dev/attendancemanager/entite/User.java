@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -21,6 +20,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @author Florent Callaou
  *	An user on the application
  */	
+/**
+ * @author Florent Callaou
+ *
+ */
 @Entity
 public class User {
 	
@@ -67,10 +70,12 @@ public class User {
 	/** departement : Departement 
 	 * @see Departement
 	*/
+	/** departement : Departement */
 	@Column
 	@Enumerated
 	private Departement departement;
 	
+	/** role : Role */
 	@Column
 	@Enumerated(EnumType.STRING)
 	private Role role;
@@ -223,10 +228,16 @@ public class User {
 		this.departement = departement;
 	}
 	
+	/** Getter for absences
+	 * @return the absences
+	 */
 	public List<Absence> getAbsences() {
 		return absences;
 	}
 
+	/** Setter for absences
+	 * @param absences the absences to set
+	 */
 	public void setAbsences(List<Absence> absences) {
 		this.absences = absences;
 	}
@@ -265,7 +276,5 @@ public class User {
 			return false;
 		return true;
 	}
-	
-	
 	
 }

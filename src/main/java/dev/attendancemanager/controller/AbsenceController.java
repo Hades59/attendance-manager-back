@@ -18,7 +18,7 @@ import dev.attendancemanager.repository.AbsenceRepository;
 /**
  * 
  * @author ETY23
- *
+ * 
  */
 @RestController
 @RequestMapping("/absences")
