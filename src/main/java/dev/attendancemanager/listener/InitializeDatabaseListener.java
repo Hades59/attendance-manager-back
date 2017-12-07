@@ -154,7 +154,8 @@ public class InitializeDatabaseListener {
 		});
 		
 		List<User> usersBase = userRepository.findAll();
-		
+		users.get(1).setRole(Role.ROLE_EMPLOYE);
+		users.get(2).setRole(Role.ROLE_ADMIN);
 
 		users.stream().map(u -> {
 			

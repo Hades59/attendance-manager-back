@@ -6,7 +6,10 @@ package dev.attendancemanager.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.security.RolesAllowed;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,38 +32,48 @@ import dev.attendancemanager.repository.FerieRepository;
 @RequestMapping("/feries")
 @CrossOrigin(origins = "*")
 public class FerieController {
-	
-	
-		
-		@Autowired
-		FerieRepository ferieRepository;
 
-		@GetMapping
-		public List<Ferie> getFeries() {
-			
+	@Autowired
+	FerieRepository ferieRepository;
+
+	@GetMapping
+	@Secured({"ROLE_MANAGER", "ROLE_EMPLOYE", "ROLE_ADMIN"})
+	public List<Ferie> getFeries() {
+
+		return ferieRepository.findAll();
+	}
+
+	@PostMapping()
+	@Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
+	public List<Ferie> createFerie(@RequestBody Ferie jf) {
+		Optional<Ferie> ferie = ferieRepository.findByDate(jf.getDate());
+
+		if (!ferie.isPresent()) {
+			ferieRepository.save(jf);
 			return ferieRepository.findAll();
 		}
-		
-		@PostMapping()
-		public List<Ferie> createAbsence(@RequestBody Ferie jf){
-			Optional<Ferie> ferie = ferieRepository.findByDate(jf.getDate());
-			
-			if (!ferie.isPresent()){
-				ferieRepository.save(jf);
-				return ferieRepository.findAll();
-			}
-			// si la date existe déja 
-			return null;
-			
-		}
-	
-		@DeleteMapping(path="/{id}")
-		public Ferie deleteFerie(@PathVariable int id){
-			Ferie ferie = ferieRepository.findOne(id);
-			
-			ferieRepository.delete(id);
-			
-			
-			return ferie;
-		}
+		// si la date existe déja
+		return null;
+
+	}
+
+	@PostMapping(path = "/{id}")
+	@Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
+	public List<Ferie> updateAbsence(@RequestBody Ferie jf) {
+
+		ferieRepository.save(jf);
+
+		return ferieRepository.findAll();
+
+	}
+
+	@DeleteMapping(path = "/{id}")
+	@Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
+	public Ferie deleteFerie(@PathVariable int id) {
+		Ferie ferie = ferieRepository.findOne(id);
+
+		ferieRepository.delete(id);
+
+		return ferie;
+	}
 }

@@ -1,18 +1,15 @@
 package dev.attendancemanager.controller;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import dev.attendancemanager.entite.Absence;
 import dev.attendancemanager.entite.AbsenceStatus;
-import dev.attendancemanager.entite.Ferie;
 import dev.attendancemanager.entite.User;
 import dev.attendancemanager.repository.AbsenceRepository;
-import dev.attendancemanager.repository.FerieRepository;
 import dev.attendancemanager.repository.UserRepository;
 
 @RestController
@@ -21,20 +18,22 @@ import dev.attendancemanager.repository.UserRepository;
 public class UserController {
 	
 	@Autowired private AbsenceRepository absenceRepository;
-	@Autowired private FerieRepository ferieRepository;
 	@Autowired private UserRepository userRepository;
 	
 	@GetMapping
+	@Secured({"ROLE_MANAGER", "ROLE_ADMIN"})
 	public List<User> getUsers() {
 		return userRepository.findAll();
 	}
 	
 	@GetMapping(path="/{matricule}")
+	@Secured({"ROLE_MANAGER", "ROLE_EMPLOYE"})
 	public User getUsersByMatricule(@PathVariable String matricule) {
 		return userRepository.findByMatricule(matricule);
 	}
 	
 	@PostMapping(path="/{matricule}/absences")
+	@Secured({"ROLE_MANAGER", "ROLE_EMPLOYE"})
 	public Absence createAbsence(@PathVariable String matricule, @RequestBody Absence absence){
 		absence.setStatus(AbsenceStatus.INITIALE);
 		User user = userRepository.findByMatricule(matricule);
@@ -46,6 +45,7 @@ public class UserController {
 	}
 	
 	@DeleteMapping(path="/{matricule}/absences/{id}")
+	@Secured({"ROLE_MANAGER", "ROLE_EMPLOYE"})
 	public Absence deleteAbsence(@PathVariable String matricule, @PathVariable int id){
 		Absence absence = absenceRepository.findOne(id);
 		
@@ -53,16 +53,6 @@ public class UserController {
 		
 		
 		return absence;
-	}
-	
-	@DeleteMapping(path="/{date}/ferie/{id}")
-	public Ferie deleteFerie(@PathVariable LocalDate Date, @PathVariable int id){
-		Ferie ferie = ferieRepository.findOne(id);
-		
-		ferieRepository.delete(id);
-		
-		
-		return ferie;
 	}
 	
 	
